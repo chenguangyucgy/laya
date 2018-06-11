@@ -78,7 +78,7 @@ module jump{
 			{
 				this.rewardBtn.disabled = false;
 			}
-			if(this.hunjiImg1.visible || this.hunjiImg1.visible || this.hunjiImg1.visible)
+			if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
 			{
 				Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
 			}
@@ -121,7 +121,7 @@ module jump{
 				  }
 				  this.expText.text = obj["exp"]+"/"+50;
 				  Laya.Tween.clearAll(this.progressBar);
-				  if(this.hunjiImg1.visible || this.hunjiImg1.visible || this.hunjiImg1.visible)
+				  if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
 				  {
 					  Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
 				  }
@@ -176,7 +176,7 @@ module jump{
 				 this.miaoBtn.mouseEnabled = true;
 			     this.ani.play();
 				 this.ani.on(Laya.Event.COMPLETE,this,this.removeAni);
-			     if(this.hunjiImg1.visible || this.hunjiImg1.visible || this.hunjiImg1.visible)
+			     if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
 				  {
 					  Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
 				  }
