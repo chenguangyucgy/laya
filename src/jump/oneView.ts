@@ -109,14 +109,18 @@ module jump{
 				  //this.miaoBtn.addChild(bubbling);
 				  bubbling.show();
 				  //this.startLearn();
+				  if(obj["exp"]<50)
+				  {
+					  this.progressBar.x +=310/50;
+				  }
 				  obj["exp"] +=1;
 				  if(obj["exp"]>=50){
 					  this.miaoBtn.mouseEnabled = false;
+					  this.rewardBtn.disabled = false;
 					  obj["exp"] =50;
 				  }
 				  this.expText.text = obj["exp"]+"/"+50;
 				  Laya.Tween.clearAll(this.progressBar);
-				  this.progressBar.x +=6.5;
 				  if(this.hunjiImg1.visible || this.hunjiImg1.visible || this.hunjiImg1.visible)
 				  {
 					  Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
@@ -172,7 +176,10 @@ module jump{
 				 this.miaoBtn.mouseEnabled = true;
 			     this.ani.play();
 				 this.ani.on(Laya.Event.COMPLETE,this,this.removeAni);
-			     Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
+			     if(this.hunjiImg1.visible || this.hunjiImg1.visible || this.hunjiImg1.visible)
+				  {
+					  Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
+				  }
 				 Laya.timer.loop(1000,this,this.init);
 			     break;
 		   case this.chou:
