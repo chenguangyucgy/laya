@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":22,
+    "selecteID":16,
     "props":{"width":640,"sceneColor":"#000000","runtime":"jump.oneView","height":1136},
     "nodeParent":-1,
     "label":"View",
@@ -131,7 +131,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":673,"x":317,"width":226,"var":"miaoBtn","skin":"gameimg/100.png","pivotY":146,"pivotX":109,"height":281},
+            "props":{"y":807,"x":318,"width":226,"var":"miaoBtn","skin":"gameimg/100.png","pivotY":280,"pivotX":110,"height":281},
             "nodeParent":1,
             "label":"Image(miaoBtn)",
             "isDirectory":false,
@@ -145,7 +145,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":742,"x":99,"width":256,"visible":false,"var":"hunjiImg1","skin":"gameimg/101.png","pivotY":166,"pivotX":121,"height":325},
+            "props":{"y":899,"x":105,"width":256,"visible":false,"var":"hunjiImg1","skin":"gameimg/101.png","pivotY":323,"pivotX":127,"height":325},
             "nodeParent":1,
             "label":"Image(hunjiImg1)",
             "isDirectory":false,
@@ -159,7 +159,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":943,"x":234,"width":256,"visible":false,"var":"hunjiImg3","skin":"gameimg/101.png","pivotY":170,"pivotX":123,"height":325},
+            "props":{"y":1099,"x":242,"width":256,"visible":false,"var":"hunjiImg3","skin":"gameimg/101.png","pivotY":326,"pivotX":131,"height":325},
             "nodeParent":1,
             "label":"Image(hunjiImg3)",
             "isDirectory":false,
@@ -172,7 +172,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":825,"x":537,"width":253,"visible":false,"var":"hunjiImg2","skin":"gameimg/104.png","pivotY":151,"pivotX":131,"height":291},
+            "props":{"y":965,"x":532,"width":253,"visible":false,"var":"hunjiImg2","skin":"gameimg/104.png","pivotY":291,"pivotX":126,"height":291},
             "nodeParent":1,
             "label":"Image(hunjiImg2)",
             "isDirectory":false,
@@ -212,7 +212,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":812,"x":473,"width":111,"var":"hunjiBtn2","skin":"gameimg/bg19.png","height":109},
+            "props":{"y":921,"x":527,"width":111,"var":"hunjiBtn2","skin":"gameimg/bg19.png","pivotY":109,"pivotX":54,"height":109},
             "nodeParent":1,
             "label":"Image(hunjiBtn2)",
             "isDirectory":false,
