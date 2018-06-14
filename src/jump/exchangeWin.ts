@@ -13,7 +13,7 @@ module jump{
 
 		private renderHandler(item:exchangeItem,index:number):void
 		{
-			//item.show(index);
+			item.show(index);
 		}
 
 		private onclick(event:Laya.Event):void

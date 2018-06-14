@@ -19,14 +19,15 @@ var jump;
             var _this = _super.call(this) || this;
             _this.list.renderHandler = Laya.Handler.create(_this, _this.renderHandler, null, false);
             _this.wu.visible = false;
-            var obj = module.oneViewModule.getInstance().currentData;
-            var arr = [];
-            for (var i = 0; i < obj["chouka"]; i++) {
-                arr.push({});
-            }
+            //var arr:Array<Object> = module.oneViewModule.getInstance().dataContent;
+            var arr = module.oneViewModule.getInstance().kapianUpdata();
+            // var arr:Array<Object> = [];
+            // for(var i:number =0;i< obj["chouka"];i++){
+            // 	arr.push({});
+            // }
             _this.list.array = arr;
             //this.on(Laya.Event.CLICK,this,this.onclick);
-            if (obj["chouka"] <= 0) {
+            if (arr.length <= 0) {
                 _this.wu.visible = true;
                 _this.on(Laya.Event.CLICK, _this, _this.onclick);
             }

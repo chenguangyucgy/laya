@@ -23,7 +23,7 @@ var jump;
             return _this;
         }
         exchangeWin.prototype.renderHandler = function (item, index) {
-            //item.show(index);
+            item.show(index);
         };
         exchangeWin.prototype.onclick = function (event) {
             switch (event.currentTarget) {

@@ -8,10 +8,10 @@ var module;
             //字典数据
             this._data = [
                 { id: 0, name: "字典1", exp: 0, current: true, zinum: 0, text: "一杯敬百合魂器", chouka: 0 },
-                { id: 1, name: "字典2", exp: 0, current: false, zinum: 0, text: "一杯敬百合魂器", chouka: 0 },
-                { id: 2, name: "字典3", exp: 0, current: false, zinum: 0, text: "一杯敬百合魂器", chouka: 0 },
-                { id: 3, name: "字典4", exp: 0, current: false, zinum: 0, text: "一杯敬百合魂器", chouka: 0 },
-                { id: 4, name: "字典5", exp: 0, current: false, zinum: 0, text: "一杯敬百合魂器", chouka: 0 }
+                { id: 1, name: "字典2", exp: 0, current: false, zinum: 0, text: "水满田畴稻叶齐", chouka: 0 },
+                { id: 2, name: "字典3", exp: 0, current: false, zinum: 0, text: "日光穿树晓烟低", chouka: 0 },
+                { id: 3, name: "字典4", exp: 0, current: false, zinum: 0, text: "黄莺也爱新凉好", chouka: 0 },
+                { id: 4, name: "字典5", exp: 0, current: false, zinum: 0, text: "飞过青山影里啼", chouka: 0 }
             ];
             //字数量
             this._ziNum = [];
@@ -89,11 +89,49 @@ var module;
                     var a = this._ziNum[i]["ziName"];
                     if (this._ziNum[i]["ziName"] == str) {
                         this._ziNum[i]["num"]++;
+                        //本地浏览器存储
+                        if (Laya.LocalStorage.getJSON("ziData")) {
+                            Laya.LocalStorage.removeItem("ziData");
+                        }
+                        Laya.LocalStorage.setJSON("ziData", this._ziNum);
                         return;
                     }
                 }
                 this._ziNum.push({ ziName: str, num: 1 });
+                //本地浏览器存储
+                if (Laya.LocalStorage.getJSON("ziData")) {
+                    Laya.LocalStorage.removeItem("ziData");
+                }
+                Laya.LocalStorage.setJSON("ziData", this._ziNum);
                 return;
+            }
+        };
+        oneViewModule.prototype.ziArr = function (arr) {
+            this._ziNum = arr;
+        };
+        /**获取卡片*/
+        oneViewModule.prototype.kapianUpdata = function () {
+            var arr = [];
+            if (this._data.length > 0) {
+                for (var i = 0; i < this._data.length; i++) {
+                    if (this._data[i]["chouka"] > 0) {
+                        for (var a = 0; a < this._data[i]["chouka"]; a++) {
+                            arr.push(this._data[i]);
+                        }
+                    }
+                }
+                return arr;
+            }
+        };
+        /**删除卡片*/
+        oneViewModule.prototype.kapianRemover = function (obj) {
+            if (this._data.length > 0) {
+                for (var i = 0; i < this._data.length; i++) {
+                    if (this._data[i]["id"] == obj["id"]) {
+                        this._data[i]["chouka"]--;
+                        return;
+                    }
+                }
             }
         };
         Object.defineProperty(oneViewModule.prototype, "ziNum", {
