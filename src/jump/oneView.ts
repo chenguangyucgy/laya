@@ -26,26 +26,38 @@ module jump{
 		  this.hunjiImg3.on(Laya.Event.CLICK,this,this.onclick);
 		  
 		  var obj:Object = module.oneViewModule.getInstance().currentData;
-		  this.dicName.text = obj["name"];
-		  this.expText.text = obj["exp"]+"/"+50;
-		  this.progressBar.x = -310 + obj["exp"]*310/50;
+		  if(obj)
+		  {
+			  this.dicName.text = obj["name"];
+			  var exp:number = Number(obj["exp"]);
+			  this.expText.text = exp+"/"+50;
+			  if(exp>=50)
+			  {
+				  exp = 50;
+			  }
+			  this.progressBar.x = -310 + exp*310/50;
+		  }
 		  this.rewardBtn.disabled =true;
 		  this.maojian();
 		  Laya.timer.loop(1000,this,this.init);
 		  Laya.timer.once(500,this,this.huxi1);
 		  Laya.timer.once(1000,this,this.huxi2);
 		  Laya.timer.once(1500,this,this.huxi3);
+		  this.hunjisever();
 		}
 
 		public init():void
 		{
 			var obj:Object = module.oneViewModule.getInstance().currentData;
-
+			var logout_time:number = Date.parse(String(new Date));
+			
 			if(obj !=null)
 			{
+				var exp:number = Number(obj["exp"]);
 				if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
 				{
-					obj["exp"]++;
+					exp++;
+					obj["exp"] =exp;
 				if(obj["exp"]>=50)
 				{
 					Laya.timer.clearAll(this);
@@ -66,21 +78,33 @@ module jump{
 		public randerinit():void
 		{
 			var obj:Object = module.oneViewModule.getInstance().currentData;
-			//Laya.timer.loop(100,this,this.randerinit);
-			this.maobi.text = this.textrander+"";
-			this.dicName.text = obj["name"];
-			this.expText.text = obj["exp"]+"/"+50;
-			this.progressBar.x = -310 + obj["exp"]*310/50;
-			//Laya.timer.clearAll(this);
-			Laya.Tween.clearAll(this.progressBar);
-			this.miaoBtn.mouseEnabled = true;
-			if(obj["exp"]>=50)
+			if(obj !=null)
 			{
-				this.rewardBtn.disabled = false;
-			}
-			if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
-			{
-				Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
+				var exp:number = Number(obj["exp"]);
+				//Laya.timer.loop(100,this,this.randerinit);
+				this.maobi.text = this.textrander+"";
+				this.dicName.text = obj["name"];
+				
+				//Laya.timer.clearAll(this);
+				Laya.Tween.clearAll(this.progressBar);
+				this.miaoBtn.mouseEnabled = true;
+				if(exp>=50)
+				{
+					exp=50;
+					this.rewardBtn.disabled = false;
+					this.miaoBtn.mouseEnabled = true;
+				}else
+				{
+					this.rewardBtn.disabled = true;
+				}
+				this.expText.text = exp+"/"+50;
+				this.progressBar.x = -310 + exp*310/50;
+				if(this.hunjiImg1.visible || this.hunjiImg2.visible || this.hunjiImg3.visible)
+				{
+					Laya.Tween.to(this.progressBar,{x:0},50000-1000*exp);
+					Laya.timer.loop(1000,this,this.init);
+				}
+				
 			}
 		}
 
@@ -109,12 +133,16 @@ module jump{
 				  //this.miaoBtn.addChild(bubbling);
 				  bubbling.show();
 				  //this.startLearn();
-				  if(obj["exp"]<50)
+				  var exp:number = Number(obj["exp"]);
+				  if(exp<50)
 				  {
 					  this.progressBar.x +=310/50;
 				  }
-				  obj["exp"] +=1;
-				  if(obj["exp"]>=50){
+				  exp +=1;
+				  var id:number = Number(obj["dictionary_id"]);
+				  
+				  obj["exp"] = exp;
+				  if(exp>=50){
 					  this.miaoBtn.mouseEnabled = false;
 					  this.rewardBtn.disabled = false;
 					  obj["exp"] =50;
@@ -168,8 +196,12 @@ module jump{
 				 break;
 		    case this.rewardBtn:
 			     var obj:Object = module.oneViewModule.getInstance().currentData;
+				 var id:number = Number(obj["dictionary_id"]);
+				 var timestamp = Date.parse(String(new Date));
+				 //util.HttpRequestUtil.senddata("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/user_dictionary_progress2.php?modify=save&&dictionary_id="+id+"&&exp="+0+"&&logout_time="+0+"");
 				 obj["exp"] = 0;
-				 obj["chouka"] = obj["chouka"]+1;
+				 var chou:number = Number(obj["chouka"]);
+				 obj["chouka"] = chou+1;
 				 this.expText.text = obj["exp"]+"/"+500;
 				 this.progressBar.x = -310 + obj["exp"]*310/50;
 				 this.rewardBtn.disabled = true;
@@ -199,17 +231,62 @@ module jump{
 				break;
 			 }	 
 		}
+		/**server是否有魂姬 */
+		public hunjisever():void
+		{
+			var hunjishu:Object = module.oneViewModule.getInstance().hunjishu;
+			//魂姬1
+			if(hunjishu["hunji1"]== "1")
+			{
+				this.hunjiBtn1.visible = false;
+				this.diImg1.visible = false;
+				this.hunjiImg1.visible = true;
+			}else
+			{
+				this.hunjiBtn1.visible = true;
+				this.diImg1.visible = true;
+				this.hunjiImg1.visible = false;
+			}
+			//魂姬2
+			if(hunjishu["hunji2"]== "1")
+			{
+				this.hunjiBtn2.visible = false;
+				this.diImg2.visible = false;
+				this.hunjiImg2.visible = true;
+			}else
+			{
+				this.hunjiBtn2.visible = true;
+				this.diImg2.visible = true;
+				this.hunjiImg2.visible = false;
+			}
+			//魂姬3
+			if(hunjishu["hunji3"]== "1")
+			{
+				this.hunjiBtn3.visible = false;
+				this.diImg3.visible = false;
+				this.hunjiImg3.visible = true;
+			}else
+			{
+				this.hunjiBtn3.visible = true;
+				this.diImg3.visible = true;
+				this.hunjiImg3.visible = false;
+			}
+
+		}
 		/**添加魂姬时设置魂姬 */
         public hunjiUpdata():void
 		{
+			var hunjishu:Object = module.oneViewModule.getInstance().hunjishu;
 			var hunjiClass = module.oneViewModule.getInstance().hunjiClass;
 			if(!this.hunjiImg1.visible && !this.hunjiImg2.visible && !this.hunjiImg3.visible )
 			{
 				var obj:Object = module.oneViewModule.getInstance().currentData;
-			    Laya.Tween.to(this.progressBar,{x:0},50000-1000*obj["exp"]);
+				var exp:number = Number(obj["exp"]);
+			    Laya.Tween.to(this.progressBar,{x:0},50000-1000*exp);
 			}
 			if(hunjiClass)
 			{
+				util.HttpRequestUtil.send3("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/user_hunji_update.php?user_id=1&&hunji"+hunjiClass+"=1");
 				this["hunjiBtn"+hunjiClass].visible = false;
 				this["diImg"+hunjiClass].visible = false;
 				this["hunjiImg"+hunjiClass].visible = true;
@@ -222,6 +299,7 @@ module jump{
 			var hunjiClass = module.oneViewModule.getInstance().hunjiClass;
 			if(hunjiClass)
 			{
+				util.HttpRequestUtil.send3("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/user_hunji_update.php?user_id=1&&hunji"+hunjiClass+"=0");
 				this["hunjiBtn"+hunjiClass].visible = true;
 				this["diImg"+hunjiClass].visible = true;
 				this["hunjiImg"+hunjiClass].visible = false;

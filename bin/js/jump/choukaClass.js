@@ -21,18 +21,21 @@ var jump;
         //接受数据
         choukaClass.prototype.show = function (index) {
             this.on(Laya.Event.CLICK, this, this.onclick);
+            var objData = this.dataSource;
         };
         choukaClass.prototype.onclick = function () {
             var objData = this.dataSource;
             var a = Math.floor(Math.random() * objData["text"].length);
             var str = String(objData["text"]);
             var zi = str.slice(a, a + 1);
+            //删除世界库字体
+            var Czi = module.oneViewModule.getInstance().removershijiezi(zi);
             this.chuoImg.visible = false;
-            this.text_cl.text = zi;
+            this.text_cl.text = Czi;
             this.mouseEnabled = false;
             //obj["chouka"]--;
             module.oneViewModule.getInstance().kapianRemover(objData);
-            module.oneViewModule.getInstance().ziku(zi);
+            module.oneViewModule.getInstance().ziku(Czi);
         };
         return choukaClass;
     }(ui.choukaClassUI));

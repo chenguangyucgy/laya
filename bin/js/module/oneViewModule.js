@@ -5,16 +5,12 @@ var module;
 (function (module) {
     var oneViewModule = /** @class */ (function () {
         function oneViewModule() {
-            //字典数据
-            this._data = [
-                { id: 0, name: "字典1", exp: 0, current: true, zinum: 0, text: "一杯敬百合魂器", chouka: 0 },
-                { id: 1, name: "字典2", exp: 0, current: false, zinum: 0, text: "水满田畴稻叶齐", chouka: 0 },
-                { id: 2, name: "字典3", exp: 0, current: false, zinum: 0, text: "日光穿树晓烟低", chouka: 0 },
-                { id: 3, name: "字典4", exp: 0, current: false, zinum: 0, text: "黄莺也爱新凉好", chouka: 0 },
-                { id: 4, name: "字典5", exp: 0, current: false, zinum: 0, text: "飞过青山影里啼", chouka: 0 }
-            ];
-            //字数量
+            /**字典数据*/
+            this._data = [];
+            /**字数量*/
             this._ziNum = [];
+            /**世界字库 */
+            this._shijie = [];
         }
         /**单例*/
         oneViewModule.getInstance = function () {
@@ -28,7 +24,34 @@ var module;
             get: function () {
                 return this._data;
             },
+            /**设置所有字典 */
             set: function (content) {
+                this._data = content;
+                jump.oneView.getInstance().randerinit();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(oneViewModule.prototype, "hunjishu", {
+            /**获取*/
+            get: function () {
+                return this._hunjishu;
+            },
+            /**设置 */
+            set: function (content) {
+                this._hunjishu = content;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(oneViewModule.prototype, "shijie", {
+            /**获取世界字库*/
+            get: function () {
+                return this._shijie;
+            },
+            /**设置世界字库 */
+            set: function (content) {
+                this._shijie = content;
             },
             enumerable: true,
             configurable: true
@@ -49,7 +72,19 @@ var module;
             get: function () {
                 if (this._data) {
                     for (var i = 0; i < this._data.length; i++) {
-                        if (this._data[i]["current"]) {
+                        if (this._data[i]["current"] == 1) {
+                            var timer = Number(this._data[i]["logout_time"]);
+                            var danTimer = Date.parse(String(new Date));
+                            var expdata = Number(this._data[i]["exp"]);
+                            if (timer > 0) {
+                                var exp = expdata + (danTimer - timer) / 1000;
+                            }
+                            else {
+                                var exp = expdata;
+                            }
+                            console.log(exp);
+                            this._data[i]["exp"] = exp;
+                            this._data[i]["logout_time"] = 0;
                             this._currentData = this._data[i];
                             return this._currentData;
                         }
@@ -74,9 +109,9 @@ var module;
         oneViewModule.prototype.updataDictionary = function (ID) {
             if (this._data && ID != undefined) {
                 for (var i = 0; i < this._data.length; i++) {
-                    this._data[i]["current"] = false;
+                    this._data[i]["current"] = 0;
                 }
-                this._data[ID]["current"] = true;
+                this._data[ID]["current"] = 1;
             }
         };
         /**获取抽到的字体*/
@@ -114,8 +149,9 @@ var module;
             var arr = [];
             if (this._data.length > 0) {
                 for (var i = 0; i < this._data.length; i++) {
-                    if (this._data[i]["chouka"] > 0) {
-                        for (var a = 0; a < this._data[i]["chouka"]; a++) {
+                    var chouka = Number(this._data[i]["chouka"]);
+                    if (chouka > 0) {
+                        for (var a = 0; a < chouka; a++) {
                             arr.push(this._data[i]);
                         }
                     }
@@ -128,10 +164,35 @@ var module;
             if (this._data.length > 0) {
                 for (var i = 0; i < this._data.length; i++) {
                     if (this._data[i]["id"] == obj["id"]) {
-                        this._data[i]["chouka"]--;
+                        var num = Number(this._data[i]["chouka"]);
+                        num--;
+                        this._data[i]["chouka"] = num;
                         return;
                     }
                 }
+            }
+        };
+        /**时间计算经验 */
+        oneViewModule.prototype.expTimer = function () {
+            var timer = Number(this._currentData["logout_time"]);
+            var danTimer = Date.parse(String(new Date));
+            var expdata = Number(this._currentData["exp"]);
+            var exp = expdata + (danTimer - timer) / 1000;
+            this._currentData["exp"] = exp;
+            return exp;
+        };
+        oneViewModule.prototype.removershijiezi = function (data) {
+            if (this._shijie) {
+                for (var i = 0; i < this._shijie.length; i++) {
+                    if (this._shijie[i]["name"] == data) {
+                        util.HttpRequestUtil.senddata("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char_jian1.php?id=" + this._shijie[i]["id"] + "");
+                        console.log("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char_jian1.php?id=" + this._shijie[i]["id"] + "");
+                        util.HttpRequestUtil.send4("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char.php?id=1");
+                        return data;
+                    }
+                }
+                var zi = "";
+                return zi;
             }
         };
         Object.defineProperty(oneViewModule.prototype, "ziNum", {

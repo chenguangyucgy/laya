@@ -109,6 +109,23 @@ module ui {
 }
 
 module ui {
+    export class LoginUI extends View {
+		public inppwd:Laya.TextInput;
+		public inpname:Laya.TextInput;
+
+        public static  uiView:any ={"type":"View","props":{"width":640,"height":1136},"child":[{"type":"Image","props":{"y":479,"x":138,"width":364,"skin":"gameimg/bg3.png","sizeGrid":"0,9,0,7","height":101},"child":[{"type":"TextInput","props":{"y":6,"x":8,"width":346,"var":"inppwd","text":"123456","promptColor":"#010000","height":90,"fontSize":32,"color":"#000000","align":"left"}}]},{"type":"Image","props":{"y":340,"x":138,"width":365,"skin":"gameimg/bg3.png","sizeGrid":"0,11,0,8","height":95},"child":[{"type":"TextInput","props":{"y":1,"x":9,"width":354,"var":"inpname","promptColor":"#000000","prompt":"用户名","height":82,"fontSize":32,"color":"#000000"}}]},{"type":"Image","props":{"y":614,"x":233,"skin":"gameimg/button4.png"},"child":[{"type":"Label","props":{"y":11,"x":14,"width":136,"text":"登录","height":39,"fontSize":32,"color":"#000000","align":"center"}}]}]};
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.createView(ui.LoginUI.uiView);
+
+        }
+
+    }
+}
+
+module ui {
     export class oneViewUI extends View {
 		public maobi:Laya.Label;
 		public dicName:Laya.Label;

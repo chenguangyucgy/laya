@@ -4,24 +4,22 @@
 module module{
 	export class oneViewModule{
 		private static _instance:oneViewModule;
-		//字典数据
-		private _data:Array<Object> = [
-			 {id:0,name:"字典1",exp: 0,current:true,zinum:0,text:"一杯敬百合魂器",chouka:0}
-			,{id:1,name:"字典2",exp: 0,current:false,zinum:0,text:"水满田畴稻叶齐",chouka:0}
-			,{id:2,name:"字典3",exp: 0,current:false,zinum:0,text:"日光穿树晓烟低",chouka:0}
-			,{id:3,name:"字典4",exp: 0,current:false,zinum:0,text:"黄莺也爱新凉好",chouka:0}
-			,{id:4,name:"字典5",exp: 0,current:false,zinum:0,text:"飞过青山影里啼",chouka:0}
-			];
-		//当前使用的字典数据
+		/**字典数据*/
+		private _data:Array<Object> = [];
+		/**当前使用的字典数据*/
 		private _currentData:Object;
-		//当前选择字典
+		/**当前选择字典*/
 		private _dicnumber:number;
-		//选择魂姬
+		/**选择魂姬*/
 		private _hunjiNum:number;
-		//字数量
+		/**字数量*/
 		private _ziNum:Array<Object> =[];
-		//魂姬类型
+		/**魂姬类型*/
 		private _hunjiClass:number;
+		/**魂姬数据 */
+		private _hunjishu:Object;
+		/**世界字库 */
+		private _shijie:Array<Object> =[];
 		constructor(){
 			
 		}
@@ -42,10 +40,34 @@ module module{
 			return this._data;
 		}
 
-
+        /**设置所有字典 */
 		public set dataContent(content:Array<Object>)
 		{
-			
+			this._data = content;
+			jump.oneView.getInstance().randerinit();
+		}
+		/**获取*/
+		public get hunjishu():Object
+		{
+			return this._hunjishu;
+		}
+
+        /**设置 */
+		public set hunjishu(content:Object)
+		{
+			this._hunjishu = content;
+		}
+
+		/**获取世界字库*/
+		public get shijie():Array<Object>
+		{
+			return this._shijie;
+		}
+
+        /**设置世界字库 */
+		public set shijie(content:Array<Object>)
+		{
+			this._shijie = content;
 		}
 
 		/**获取当前选择相对应位子的魂姬数据*/
@@ -65,8 +87,22 @@ module module{
 			if(this._data)
 			{
 				for(var i:number =0;i<this._data.length;i++){
-					if(this._data[i]["current"])
+					if(this._data[i]["current"] ==1)
 					{
+						var timer:number = Number(this._data[i]["logout_time"]);
+						var danTimer:number = Date.parse(String(new Date));
+						var expdata:number = Number(this._data[i]["exp"]);
+						if(timer>0)
+						{
+							var exp:number = expdata+(danTimer-timer)/1000;
+						}else
+						{
+							var exp:number = expdata;
+						}
+						console.log(exp);
+						
+						this._data[i]["exp"] = exp
+						this._data[i]["logout_time"] = 0;
 						this._currentData = this._data[i];
 						return this._currentData;
 					}
@@ -97,9 +133,9 @@ module module{
 			{
 				for(var i:number = 0;i<this._data.length;i++)
 				{
-					this._data[i]["current"] = false;
+					this._data[i]["current"] = 0;
 				}
-				this._data[ID]["current"] = true;
+				this._data[ID]["current"] = 1;
 				
 			}
 		}
@@ -151,9 +187,10 @@ module module{
 			{
 				for(var i:number =0;i<this._data.length;i++)
 				{
-					if(this._data[i]["chouka"]>0)
+					var chouka:number = Number(this._data[i]["chouka"]); 
+					if(chouka>0)
 					{
-						for(var a:number =0 ;a<this._data[i]["chouka"];a++)
+						for(var a:number =0 ;a<chouka;a++)
 						{
 							arr.push(this._data[i]);
 						}
@@ -171,10 +208,42 @@ module module{
 				{
 					if(this._data[i]["id"] == obj["id"])
 					{
-						this._data[i]["chouka"]--;
+						var num:number = Number(this._data[i]["chouka"]);
+						num--;
+						this._data[i]["chouka"] =num;
 						return;
 					}
 				}
+			}
+		}
+        /**时间计算经验 */
+		public expTimer():number
+		{
+			var timer:number = Number(this._currentData["logout_time"]);
+			var danTimer:number = Date.parse(String(new Date));
+			var expdata:number = Number(this._currentData["exp"]);
+		    var exp:number = expdata+(danTimer-timer)/1000;
+			this._currentData["exp"] = exp;
+			return exp;
+		}
+
+		public removershijiezi(data:string):string
+		{
+			if(this._shijie)
+			{
+			     for(var i:number = 0;i<this._shijie.length;i++)
+				 {
+					 if(this._shijie[i]["name"] == data)
+					 {
+						 util.HttpRequestUtil.senddata("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char_jian1.php?id="+this._shijie[i]["id"]+"");
+						 console.log("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char_jian1.php?id="+this._shijie[i]["id"]+"");
+						 
+						 util.HttpRequestUtil.send4("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/world_charbank_char.php?id=1");
+						 return data;
+					 }
+				 }
+				 var zi = "";
+				 return zi;
 			}
 		}
 

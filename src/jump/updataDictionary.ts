@@ -10,7 +10,8 @@ module jump{
 		//list数据
 		this.list.array = module.oneViewModule.getInstance().dataContent;
 		var obj:Object = module.oneViewModule.getInstance().currentData;
-		this.ZdicItem.expText.text = obj["chouka"]+"/"+7;
+		var chouka:number = Number(obj["chouka"]);
+		this.ZdicItem.expText.text = chouka+"/"+7;
 		this.ZdicItem.dictionary_text.text = obj["name"];
 		this.list.on(Laya.Event.CLICK,this,this.onclick);
 		this.okBtn.on(Laya.Event.CLICK,this,this.onclick);
@@ -42,7 +43,19 @@ module jump{
 				case this.okBtn:
 				     //确认选择的字典
 				     var dicnumder = module.oneViewModule.getInstance().dicnumber;
+					 var obj:Object = module.oneViewModule.getInstance().currentData;
+					 var id:number = Number(obj["dictionary_id"]);
 				     module.oneViewModule.getInstance().updataDictionary(dicnumder);
+ 					 var timestamp = Date.parse(String(new Date));
+					 //dicnumder++;
+					 //if(dicnumder !=id)
+					 //{
+						 //var exp:number = module.oneViewModule.getInstance().expTimer();
+						 //var exp:number = obj["exp"];
+					     //util.HttpRequestUtil.senddata("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/user_dictionary_progress2.php?modify=save&&dictionary_id="+id+"&&exp="+exp+"&&logout_time="+timestamp+"&&current="+0+"");
+						 //util.HttpRequestUtil.senddata("http://111.230.129.82:8001/tiaotiao_goldofword_2/api/user_dictionary_progress2.php?modify=save&&dictionary_id="+dicnumder+"&&logout_time="+0+"&&current="+1+"");
+					 //}
+					 
 					 jump.updataDictionary.closeAll();
 					 jump.oneView.getInstance().randerinit(); 
 				     break;
